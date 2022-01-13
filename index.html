@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MultiTenant App (TypeScript)</title>
+    <link rel="stylesheet" href="./assets/style.css">
+  </head>
+  <body>
+    <div style="width: 100%; overflow: hidden;">
+      <div style="width: 600px; float: left; border: thick double #32a1ce;">
+        <h2>Status</h2>
+        <h3>Tenant 1</h3>
+        <span>URL: </span><span id="tenant1_url">None</span><br>
+        <span>Realm: </span><span id="tenant1_realm">None</span><br>
+        <span>Client: </span><span id="tenant1_client">None</span><br>
+        <span>Status: </span><span id="tenant1_status">Initializing...</span>
+<br><br>
+        <button class="button-4" role="button" id="tenant1_login" >Login</button>
+
+        <button class="button-4" role="button" id="tenant1_logout">Logout</button>
+
+        <!-- <input type="button" class="button" id="tenant1_login" value="Login">
+        <input type="button" class="button" id="tenant1_logout" value="Logout"> -->
+
+        <h2>User information</h2>
+
+       
+        <table>
+          <tr *ngIf="userProfile.username">
+            <th scope="row">Username</th>
+            <td id="tenant1_username"></td>
+          </tr>
+          <tr *ngIf="userProfile.firstName">
+            <th scope="row">First name</th>
+            <td id="tenant1_firstname"></td>
+          </tr>
+          <tr *ngIf="userProfile.lastName">
+            <th scope="row">Last name</th>
+            <td id="tenant1_lastname"></td>
+          </tr>
+          <tr *ngIf="userProfile.email">
+            <th scope="row">E-mail</th>
+            <td id="tenant1_email"></td>
+          </tr>
+        </table>
+        <br>
+ <!-- <input type="button" class="button" id="profile_tenant1" value="Load Profile"> -->
+ <button class="button-4" role="button" id="profile_tenant1">Reload Profile</button>
+        <h2>API</h2>
+
+        <!-- <input type="button" class="button" id="tenant1_request_tenant1" value="Make Request to Tenant 1"> -->
+        <button class="button-4" role="button" id="tenant1_request_tenant1">Make Request to Tenant 1</button>
+
+        <span>Result: </span><span id="tenant1_request_tenant1_result">Not executed</span>
+        <br><br>
+        <!-- <input type="button" class="button" id="tenant1_request_tenant2" value="Make Request to Tenant 2"> -->
+        <button class="button-4" role="button" id="tenant1_request_tenant2">Make Request to Tenant 2</button>
+
+        <span>Result: </span><span id="tenant1_request_tenant2_result">Not executed</span>
+      </div>
+
+
+      <div style="margin-left: 620px; border: thick double #32a1ce;">
+        <h2>Status</h2>
+        <h3>Tenant 2</h3>
+
+        <span>URL: </span><span id="tenant2_url">None</span><br>
+        <span>Realm: </span><span id="tenant2_realm">None</span><br>
+        <span>Client: </span><span id="tenant2_client">None</span><br>
+        <span>Status: </span><span id="tenant2_status">Initializing...</span>
+        <br><br>
+
+        <button class="button-4" role="button" id="tenant2_login" >Login</button>
+
+        <button class="button-4" role="button" id="tenant2_logout">Logout</button>
+        <!-- <input type="button" class="button" id="tenant2_login" value="Login">
+        <input type="button" class="button" id="tenant2_logout" value="Logout"> -->
+        <h2>User information</h2>
+
+        <table>
+          <tr *ngIf="userProfile.username">
+            <th scope="row">Username</th>
+            <td id="tenant2_username"></td>
+          </tr>
+          <tr *ngIf="userProfile.firstName">
+            <th scope="row">First name</th>
+            <td id="tenant2_firstname"></td>
+          </tr>
+          <tr *ngIf="userProfile.lastName">
+            <th scope="row">Last name</th>
+            <td id="tenant2_lastname"></td>
+          </tr>
+          <tr *ngIf="userProfile.email">
+            <th scope="row">E-mail</th>
+            <td id="tenant2_email"></td>
+          </tr>
+        </table>
+        <br>
+                <!-- <input type="button" class="button" id="profile_tenant2" value="Load Profile"> -->
+        <!-- HTML !-->
+        <button class="button-4" role="button" id="profile_tenant2">Reload Profile</button>
+
+
+        <h2>API</h2>
+
+        <!-- <input type="button" class="button" id="tenant2_request_tenant1" value="Make Request to Tenant 1"> -->
+        <button class="button-4" role="button" id="tenant2_request_tenant1">Make Request to Tenant 1</button>
+
+        <span>Result: </span><span id="tenant2_request_tenant1_result">Not executed</span>
+        <br><br>
+        <!-- <input type="button" class="button" id="tenant2_request_tenant2" value="Make Request to Tenant 2"> -->
+        <button class="button-4" role="button" id="tenant2_request_tenant2">Make Request to Tenant 2</button>
+
+        <span>Result: </span><span id="tenant2_request_tenant2_result">Not executed</span>
+
+
+
+      </div>
+    </div>
+
+    <script src="./dist/app.js"></script>
+    <script>
+      var hash = window.location.hash.substr(1);
+
+      var result = hash.split('&').reduce(function (res, item) {  
+          var parts = item.split('=');
+          res[parts[0]] = parts[1];
+          return res;
+      }, {});
+    </script>>
+
+  </body>
+</html>

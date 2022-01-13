@@ -1,0 +1,27 @@
+<html>
+<head>
+    <script src="http://192.168.100.56:8080/auth/js/keycloak.js"></script>
+    <script>
+        function initKeycloak() {
+            // var keycloak = new Keycloak();
+            var keycloak = new Keycloak({
+                url: 'http://192.168.100.56:8080/auth',
+                realm: 'Tenant1',
+                clientId: 'portal'
+            });
+            keycloak.init({
+                // onLoad: 'login-required'
+                onLoad: 'check-sso',
+                silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
+            }).then(function(authenticated) {
+                alert(authenticated ? 'authenticated' : 'not authenticated');
+            }).catch(function() {
+                alert('failed to initialize');
+            });
+        }
+    </script>
+</head>
+<body onload="initKeycloak()">
+    <!-- your page content goes here -->
+</body>
+</html>

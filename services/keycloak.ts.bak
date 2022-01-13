@@ -1,0 +1,87 @@
+import { debug } from 'console';
+import Keycloak, { KeycloakInstance } from 'keycloak-js';
+
+interface TenantConfig {
+    url: string;
+    realm: string;
+    clientId: string;
+}
+
+export class KeycloakService {
+    private kcInstance1: Keycloak.KeycloakInstance;
+    private kcInstance2: Keycloak.KeycloakInstance;
+
+    private Tenant1Config: TenantConfig = {
+        url: "http://192.168.100.56:8080/auth",
+        realm: "Tenant1",
+        clientId: "portal2"
+    }
+
+    private Tenant2Config: TenantConfig = {
+        url: "http://192.168.100.56:8080/auth",
+        realm: "Tenant2",
+        clientId: "portal"
+    }
+
+    constructor() {
+        this.kcInstance1 = Keycloak({
+            clientId: this.Tenant1Config.clientId,
+            realm: this.Tenant1Config.realm,
+            url: this.Tenant1Config.url,
+        });
+
+        this.kcInstance1.init({
+            onLoad: 'check-sso',
+            silentCheckSsoRedirectUri: window.location.origin
+        }).then(function(authenticated) {
+            alert(authenticated ? 'kcInstance1 authenticated' : 'kcInstance1 not authenticated');
+        }).catch(function() {
+            debugger
+            alert('kcInstance1 failed to initialize');
+        });
+
+        this.kcInstance2 = Keycloak({
+            clientId: this.Tenant2Config.clientId,
+            realm: this.Tenant2Config.realm,
+            url: this.Tenant2Config.url,
+        });
+
+        this.kcInstance2.init({
+            onLoad: 'check-sso',
+            silentCheckSsoRedirectUri: window.location.origin
+        }).then(function(authenticated) {
+            alert(authenticated ? 'kcInstance2 authenticated' : 'kcInstance2 not authenticated');
+        }).catch(function() {
+            debugger
+            alert('kcInstance2 failed to initialize');
+        });
+
+        
+    };
+
+    // initKeycloak(keycloak: KeycloakInstance) {
+    //     return () =>
+    //       keycloak.init({
+    //         onLoad: 'check-sso',
+    //         silentCheckSsoRedirectUri: window.location.origin
+    //     });
+    // }
+
+    login() {
+        console.log("login")
+
+        if (!this.kcInstance1?.authenticated) {
+            console.log("kcInstance1: not authenticated!")
+            //this.kcInstance1.login()
+        } else {
+            console.log("kcInstance1: authenticated")
+        }
+
+        if (!this.kcInstance2?.authenticated) {
+            console.log("kcInstance2: not authenticated!")
+            //this.kcInstance2.login()
+        } else {
+            console.log("kcInstance2: authenticated")
+        }
+    }
+}
