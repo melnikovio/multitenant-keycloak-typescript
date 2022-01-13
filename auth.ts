@@ -2,30 +2,26 @@ import { KeycloakService } from "./services/keycloak";
 import fetch from 'node-fetch';
 
 
-
 interface TenantConfig {
   url: string;
   realm: string;
   clientId: string;
 }
 
-let Tenant1Config: TenantConfig = {
-  url: "https://ziiot-qa02.apps.okd01.ziiot.ru/auth/",
-  realm: "tenant1",
-  clientId: "portal"
-}
-
-let Tenant2Config: TenantConfig = {
-  url: "https://ziiot-qa02.apps.okd01.ziiot.ru/auth/",
-  realm: "tenant2",
-  clientId: "portal"
+const getRuntimeConfig = async () => {
+  const runtimeConfig = await fetch('./config.json');
+  return await runtimeConfig.json()
 }
 
 load();
 
 
+let Config: TenantConfig[]
+
 class AdminTS {
   constructor() {
+
+
 
     document.getElementById("tenant1_login").addEventListener("click", Event => login_tenant1());
 
@@ -49,12 +45,6 @@ class AdminTS {
 
     document.getElementById("tenant2_request_tenant2")?.addEventListener("click", Event => tenant2_request_tenant2())
   }
-
-  disp_alrt(){
-    alert("You pressed the button!");
-    let button = document.getElementById("container")
-    button.textContent = "test"
-  }
 }
 
 // start the app
@@ -65,25 +55,32 @@ let KS1: KeycloakService
 let KS2: KeycloakService
   
 async function load() {
-
-
   console.log("load");
 
-  KS1 = new KeycloakService(Tenant1Config.clientId, Tenant1Config.realm, Tenant1Config.url, "tenant1");
+  getRuntimeConfig().then(function(json) {
+    Config = json as TenantConfig[]
+    let Tenant1Config = Config[0]
+    let Tenant2Config = Config[1]
+
+    KS1 = new KeycloakService(Tenant1Config.clientId, Tenant1Config.realm, Tenant1Config.url, "tenant1");
 
   
-  // await new Promise(f => setTimeout(f, 2000));
+    // await new Promise(f => setTimeout(f, 2000));
 
-  KS2 = new KeycloakService(Tenant2Config.clientId, Tenant2Config.realm, Tenant2Config.url, "tenant2");
+    KS2 = new KeycloakService(Tenant2Config.clientId, Tenant2Config.realm, Tenant2Config.url, "tenant2");
 
-  console.log("loaded")
+    console.log("loaded")
 
-  // debugger
-  await new Promise(f => setTimeout(f, 2000));
+    // debugger
+    // await new Promise(f => setTimeout(f, 2000));
 
-  login()
+    login()
 
-  // debugger
+    // debugger
+  });
+
+
+  
 }
 
 // debugger

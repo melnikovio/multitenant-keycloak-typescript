@@ -1,0 +1,12 @@
+[
+    {
+        "url": "https://keycloak.com/auth/",
+        "realm": "tenant1",
+        "clientId": "public"
+    },
+    {
+        "url": "https://keycloak.com/auth/",
+        "realm": "tenant2",
+        "clientId": "public"
+    }
+]
