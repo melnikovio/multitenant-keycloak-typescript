@@ -2,6 +2,19 @@
   <body>
     <script>
         console.log("redirect")
+        let redirectUrl
+        var hash = window.location.hash.substr(1);
+
+        var result = hash.split('&').reduce(function (res, item) {  
+            var parts = item.split('=');
+            if (parts[0] == "redirecturl") {
+              redirectUrl= parts[1]
+            }
+            res[parts[0]] = parts[1];
+            return res;
+        }, {});
+        
+        // url = redirectUrl + window.location.hash + "&refreshme=true"
         url = window.location.origin + window.location.hash + "&refreshme=true"
         window.location.replace(url);
     </script>

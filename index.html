@@ -111,22 +111,9 @@
         <button class="button-4" role="button" id="tenant2_request_tenant2">Make Request to Tenant 2</button>
 
         <span>Result: </span><span id="tenant2_request_tenant2_result">Not executed</span>
-
-
-
       </div>
     </div>
 
     <script src="./dist/app.js"></script>
-    <script>
-      var hash = window.location.hash.substr(1);
-
-      var result = hash.split('&').reduce(function (res, item) {  
-          var parts = item.split('=');
-          res[parts[0]] = parts[1];
-          return res;
-      }, {});
-    </script>>
-
   </body>
 </html>

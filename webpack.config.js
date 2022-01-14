@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
     mode: 'none',
     entry: {
-        app: path.join(__dirname, 'auth.ts')
+        app: path.join(__dirname, 'main.ts')
     },
     target: 'web',
     resolve: {

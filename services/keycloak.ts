@@ -1,12 +1,7 @@
-import { debug } from 'console';
 import Keycloak, { KeycloakInstance } from 'keycloak-js';
-
-
-
 export class KeycloakService {
     public KcInstance: Keycloak.KeycloakInstance;
-    // private kcInstance2: Keycloak.KeycloakInstance;
-
+ 
     constructor(clientId: string, realm: string, url: string, tenant: string) {
         console.log("loading " + realm)
 
@@ -14,57 +9,42 @@ export class KeycloakService {
         document.getElementById(tenant + "_realm").textContent = realm
         document.getElementById(tenant + "_client").textContent = clientId
 
-
-        this.KcInstance = Keycloak({
+        let kk = Keycloak({
             clientId: clientId,
             realm: realm,
             url: url,
         });
+        this.KcInstance = kk
 
         this.KcInstance.init({
             onLoad: 'check-sso',
             silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
             silentCheckSsoFallback: false
         }).then(function(authenticated) {
-            console.log(authenticated ? realm + ' authenticated' : realm + ' not authenticated');
+            console.log(tenant + " " + realm + authenticated ? ' authenticated' : ' not authenticated');
+            if (authenticated) {
+                document.getElementById(tenant + "_status").textContent = "Authenticated"
+                document.getElementById(tenant + "_status").style.color = "#228B22";
+                fillProfile(tenant, kk);
+            } else {
+                document.getElementById(tenant + "_status").textContent = "Not authenticated"
+                document.getElementById(tenant + "_status").style.color = "#FF0000";
+                // autologin
+                //tc.login()
+            }
         }).catch(function() {
             console.log(realm + ' failed to initialize');
+            // workaround about callback
             var hash = window.location.hash.substr(1);
             if (hash == "refreshme=true") {
-
                 window.location.replace(window.location.origin);
-
             }
-            // debugger
-            // var result = hash.split('&').reduce(function (res, item) {
-            //     var parts = item.split('=');
-            //     res[parts[0]] = parts[1];
-            //     return res;
-            // }, {});
         });
-
-        // this.kcInstance2 = Keycloak({
-        //     clientId: this.Tenant2Config.clientId,
-        //     realm: this.Tenant2Config.realm,
-        //     url: this.Tenant2Config.url,
-        // });
-
-        // this.kcInstance2.init({
-        //     onLoad: 'check-sso',
-        //     silentCheckSsoRedirectUri: window.location.origin
-        // }).then(function(authenticated) {
-        //     alert(authenticated ? 'kcInstance2 authenticated' : 'kcInstance2 not authenticated');
-        // }).catch(function() {
-        //     debugger
-        //     alert('kcInstance2 failed to initialize');
-        // });
-
-        
     };
 
     login() {
         this.KcInstance.login({
-             redirectUri: window.location.origin + '/assets/redirect.html'
+             redirectUri: window.location.origin + '/assets/redirect.html' + "#redirecturl=" + window.location.origin + window.location.pathname
         });
     }
 
@@ -75,26 +55,16 @@ export class KeycloakService {
     }
 
     profile(tenant: string) {
-        fill(tenant, this.KcInstance);
+        fillProfile(tenant, this.KcInstance);
     }
-
-    // initKeycloak(keycloak: KeycloakInstance) {
-    //     return () =>
-    //       keycloak.init({
-    //         onLoad: 'check-sso',
-    //         silentCheckSsoRedirectUri: window.location.origin
-    //     });
-    // }
 }
 
-async function fill(tenant: string, keycloak: KeycloakInstance) {
 
+async function fillProfile(tenant: string, keycloak: KeycloakInstance) {
     let profile = await keycloak.loadUserProfile()
 
     document.getElementById(tenant + "_username").textContent = profile.username
     document.getElementById(tenant + "_firstname").textContent = profile.firstName
     document.getElementById(tenant + "_lastname").textContent = profile.lastName
     document.getElementById(tenant + "_email").textContent = profile.email
-
-
 }
