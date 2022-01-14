@@ -1,12 +1,12 @@
 [
     {
-        "url": "https://ziiot-qa02.apps.okd01.ziiot.ru/auth/",
+        "url": "https://keycloak.com/auth/",
         "realm": "tenant1",
-        "clientId": "portal"
+        "clientId": "public"
     },
     {
-        "url": "https://ziiot-qa02.apps.okd01.ziiot.ru/auth/",
+        "url": "https://keycloak.com/auth/",
         "realm": "tenant2",
-        "clientId": "portal"
+        "clientId": "public"
     }
 ]
